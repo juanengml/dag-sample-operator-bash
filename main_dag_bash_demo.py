@@ -10,7 +10,7 @@ args = {
 }
 
 with DAG(
-    dag_id='example_bash_operator',
+    dag_id='example_bash_operator_sample',
     default_args=args,
     schedule_interval='0 0 * * *',
     start_date=days_ago(2),
@@ -34,14 +34,14 @@ with DAG(
 
     for i in range(6):
         task = BashOperator(
-            task_id='runme_' + str(i),
+            task_id='abobora_task_' + str(i),
             bash_command='echo "{{ task_instance_key_str }}" && sleep 1',
         )
         task >> run_this
 
     # [START howto_operator_bash_template]
     also_run_this = BashOperator(
-        task_id='also_run_this',
+        task_id='tambem_run_this',
         bash_command='echo "run_id={{ run_id }} | dag_run={{ dag_run }}"',
     )
     # [END howto_operator_bash_template]
