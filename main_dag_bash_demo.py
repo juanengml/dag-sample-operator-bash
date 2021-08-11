@@ -20,7 +20,7 @@ with DAG(
 ) as dag:
 
     run_this_last = BashOperator(
-        task_id='run_this_last',
+        task_id='final',
         bash_command='echo 2',
 
     )
