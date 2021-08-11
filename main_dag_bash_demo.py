@@ -32,7 +32,7 @@ with DAG(
     )
     # [END howto_operator_bash]
 
-    run_this >> run_this_last
+    run_this_last >> run_this 
 
     for i in range(2):
         task = BashOperator(
