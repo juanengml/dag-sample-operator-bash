@@ -32,7 +32,7 @@ with DAG(
 
     run_this >> run_this_last
 
-    for i in range(6):
+    for i in range(2):
         task = BashOperator(
             task_id='abobora_task_' + str(i),
             bash_command='echo "{{ task_instance_key_str }}" && sleep 1',
@@ -40,13 +40,8 @@ with DAG(
         task >> run_this
 
     # [START howto_operator_bash_template]
-    also_run_this = BashOperator(
-        task_id='tambem_run_this',
-        bash_command='echo "run_id={{ run_id }} | dag_run={{ dag_run }}"',
-    )
     # [END howto_operator_bash_template]
-    also_run_this >> run_this_last
-
+    
 # [START howto_operator_bash_skip]
 this_will_skip = BashOperator(
     task_id='this_will_skip',
