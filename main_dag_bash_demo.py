@@ -15,7 +15,7 @@ with DAG(
     schedule_interval='0 0 * * *',
     start_date=days_ago(2),
     dagrun_timeout=timedelta(minutes=60),
-    tags=['example', 'example2'],
+    tags=['demo', 'BashOperator'],
     params={"example_key": "example_value"},
 ) as dag:
 
