@@ -19,8 +19,10 @@ with DAG(
     params={"example_key": "example_value"},
 ) as dag:
 
-    run_this_last = DummyOperator(
+    run_this_last = BashOperator(
         task_id='run_this_last',
+        bash_command='echo 2',
+
     )
 
     # [START howto_operator_bash]
