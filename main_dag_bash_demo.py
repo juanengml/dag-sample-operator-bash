@@ -27,7 +27,7 @@ with DAG(
 
     # [START howto_operator_bash]
     run_this = BashOperator(
-        task_id='run_after_loop',
+        task_id='meio_do_loop',
         bash_command='echo 1',
     )
     # [END howto_operator_bash]
@@ -36,7 +36,7 @@ with DAG(
 
     for i in range(2):
         task = BashOperator(
-            task_id='abobora_task_' + str(i),
+            task_id='loop' + str(i),
             bash_command='echo "{{ task_instance_key_str }}" && sleep 1',
         )
         task >> run_this
