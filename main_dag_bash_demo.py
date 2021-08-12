@@ -4,7 +4,8 @@
 from datetime import timedelta
 
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.operators.python_operator import PythonOperator
+from airflow.operators.bash_operator import BashOperator
 from airflow.utils.dates import days_ago
 
 args = {
@@ -21,15 +22,20 @@ with DAG(
     params={"example_key": "example_value"},
 ) as dag:
 
-    extracao_task = BashOperator(
-        task_id='extracao',
-        bash_command='sudo apt install wget -y ; wget https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv', 
-    )
+    def extracao():
+       print("Hello Airflow Using a Python Operator!\nextracao")
+         
+    def transformacao():
+       print("Hello Airflow Using a Python Operator!\ntransformacao")
 
-    transformacao = BashOperator(
-        task_id='transformacao',
-        bash_command='cat iris.csv ',
-    )
+    def load():
+       print("Hello Airflow Using a Python Operator!\nLOAD")
+
+
+    extract = PythonOperator(task_id='extract',
+                             python_callable=extracao)
+    trans = PythonOperator(task_id='task-trans',
+                             python_callable=transformacao)
 
     load = BashOperator(
         task_id='carga',
@@ -37,7 +43,7 @@ with DAG(
     )
       
 
-    extracao_task >> transformacao >> load
+    extract >> trans >> load
 
 if __name__ == "__main__":
     dag.cli()
