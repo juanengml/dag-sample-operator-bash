@@ -13,7 +13,7 @@ args = {
 }
 
 with DAG(
-    dag_id='example_bash_etl_debora',
+    dag_id='example_bash_etl_deb',
     default_args=args,
     schedule_interval='@hourly',
     start_date=days_ago(2),
