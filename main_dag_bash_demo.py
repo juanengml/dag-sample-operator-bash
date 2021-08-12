@@ -13,40 +13,32 @@ args = {
 }
 
 with DAG(
-    dag_id='example_bash_operator_sample',
+    dag_id='example_bash_etlc',
     default_args=args,
     schedule_interval='0 0 * * *',
     start_date=days_ago(2),
     dagrun_timeout=timedelta(minutes=60),
-    tags=['demo', 'BashOperator'],
+    tags=['etl', 'BashOperator'],
     params={"example_key": "example_value"},
 ) as dag:
 
-    run_this_last = BashOperator(
-        task_id='final',
-        bash_command='echo 2',
-
+    extracao_task = BashOperator(
+        task_id='extracao',
+        bash_command='wget https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv',
     )
 
-    # [START howto_operator_bash]
-    run_this = BashOperator(
-        task_id='meio_do_loop',
-        bash_command='echo 1',
+    transformacao = BashOperator(
+        task_id='transformacao',
+        bash_command='cat iris.csv ',
     )
-    # [END howto_operator_bash]
 
-    run_this >> run_this_last
+    load = BashOperator(
+        task_id='carga',
+        bash_command='echo carga',
+    )
+      
 
-    for i in range(2):
-        task = BashOperator(
-            task_id='loop' + str(i),
-            bash_command='echo "{{ task_instance_key_str }}" && sleep 1',
-        )
-        task >> run_this
-
-    # [START howto_operator_bash_template]
-    # [END howto_operator_bash_template]
-    
+    extracao_task >> transformacao >> load
 
 if __name__ == "__main__":
     dag.cli()
