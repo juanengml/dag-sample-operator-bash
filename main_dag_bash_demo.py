@@ -8,13 +8,13 @@ from airflow.operators.bash import BashOperator
 from airflow.utils.dates import days_ago
 
 args = {
-    'owner': 'airflow',
+    'owner': 'Debora',
 }
 
 with DAG(
-    dag_id='example_bash_etlc',
+    dag_id='example_bash_etl_debora',
     default_args=args,
-    schedule_interval='0 0 * * *',
+    schedule_interval='@hourly',
     start_date=days_ago(2),
     dagrun_timeout=timedelta(minutes=60),
     tags=['etl', 'BashOperator'],
@@ -23,7 +23,7 @@ with DAG(
 
     extracao_task = BashOperator(
         task_id='extracao',
-        bash_command='wget https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv',
+        bash_command='sudo apt install wget -y ;wget https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv',
     )
 
     transformacao = BashOperator(
