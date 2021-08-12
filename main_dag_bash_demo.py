@@ -42,6 +42,7 @@ with DAG(
         bash_command='echo carga',
     )
       
+    # test   
 
     extract >> trans >> load
 
