@@ -48,7 +48,7 @@ with DAG(
                              python_callable=extracao)
     trans = PythonOperator(task_id='task-trans',
                              python_callable=transformacao)
-
+ 
     load = BashOperator(
         task_id='carga',
         bash_command='cat base_limpa.csv',
