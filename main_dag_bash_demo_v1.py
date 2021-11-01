@@ -7,7 +7,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.bash_operator import BashOperator
 from airflow.utils.dates import days_ago
-from airflow.operators.papermill_operator import PapermillOperator
+#from airflow.operators.papermill_operator import PapermillOperator
 
 
 args = {
@@ -37,15 +37,10 @@ with DAG(
     def load():
        print("Hello Airflow Using a Python Operator!\nLOAD")
 
-    notebook =  PapermillOperator(
-        task_id="run_example_notebook",
-        input_nb="hello_world.ipynb",
-        output_nb="out-{{ execution_date }}.ipynb",
-        parameters={"msgs": "Ran from Airflow at {{ execution_date }}!"}
-    )
 
     extract = PythonOperator(task_id='extract',
                              python_callable=extracao)
+    
     trans = PythonOperator(task_id='task-trans',
                              python_callable=transformacao)
  
@@ -56,7 +51,7 @@ with DAG(
       
     # test   
 
-    extract >> trans >> load >> notebook
+    extract >> trans >> load 
 
 if __name__ == "__main__":
     dag.cli()
