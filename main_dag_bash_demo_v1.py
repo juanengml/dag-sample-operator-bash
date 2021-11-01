@@ -11,11 +11,11 @@ from airflow.utils.dates import days_ago
 
 
 args = {
-    'owner': 'Debora',
+    'owner': 'me',
 }
 
 with DAG(
-    dag_id='notebook_dag_v1',
+    dag_id='abobora_dag',
     default_args=args,
     schedule_interval='@hourly',
     start_date=days_ago(2),
