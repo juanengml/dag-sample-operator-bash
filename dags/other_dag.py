@@ -15,7 +15,8 @@ series = {
 }
 
 default_args = {
-    "owner": "airflow",
+    "owner": "me",
+    "time": "finance",
     "start_date": datetime(2023, 1, 1),
     "retries": 1,
     "retry_delay": timedelta(minutes=5)
