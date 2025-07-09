@@ -50,7 +50,7 @@ with DAG(
  
     load = BashOperator(
         task_id='carga',
-        bash_command='cat base_limpa.csv',
+        bash_command='ls *',
     )
       
     # test   
