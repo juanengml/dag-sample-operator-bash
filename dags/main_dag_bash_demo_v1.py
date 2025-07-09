@@ -47,15 +47,11 @@ with DAG(
  
     tchau = PythonOperator(task_id='task-msg',
                              python_callable=bye)
- 
-    load = BashOperator(
-        task_id='carga',
-        bash_command='ls *',
-    )
+
       
     # test   
 
-    extract >> trans >> load >> tchau
+    extract >> trans >> tchau
 
 if __name__ == "__main__":
     dag.cli()
