@@ -69,7 +69,7 @@ with DAG(
     dag_id="random_user_pipeline",
     description="Pipeline de 6 etapas para coletar e processar usuários aleatórios.",
     start_date=days_ago(1),  # start backfill em D‑1
-    schedule_interval=None,  # Executa on‑demand
+    schedule_interval="0 8 * * 1",
     catchup=False,
     tags=["example", "randomuser"],
     default_args={
