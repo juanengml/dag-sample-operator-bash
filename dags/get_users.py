@@ -1,38 +1,9 @@
-"""
-Airflow DAG: random_user_pipeline_dag.py
----------------------------------------
-Pipeline de 6 etapas que consulta a API https://randomuser.me/api/0.8/?results=10
-usando apenas a biblioteca `requests` do Python.
-
-Etapas:
-1. **fetch_users**   – Faz o GET na API e armazena o JSON cru em XCom.
-2. **parse_users**   – Converte o JSON em objeto Python e extrai a lista de usuários.
-3. **select_fields** – Seleciona campos-chave (nome, e‑mail, usuário) e deixa os dados “enxutos”.
-4. **save_to_local** – Salva o JSON formatado em /tmp/random_users.json (ou caminho desejado).
-5. **validate_count** – Garante que recebemos exatamente 10 usuários.
-6. **print_summary** – Loga um resumo com contagem e 1º registro como amostra.
-
-Executa apenas uma vez (schedule_interval=None). Ajuste conforme necessidade.
-"""
 
 from __future__ import annotations
 
 import json
 import logging
 from datetime import timedelta
-
-# Substitui o trecho atual:
-# import pendulum
-# from datetime import timedelta
-
-try:
-    import pendulum
-    timezone = pendulum.timezone("America/Sao_Paulo")
-    from datetime import timedelta
-except ImportError:
-    from datetime import datetime, timedelta, timezone as dt_timezone
-    pendulum = None
-    timezone = dt_timezone.utc  # ou dt_timezone(timedelta(hours=-3)) para BRT
 
 import requests
 from airflow import DAG
@@ -92,13 +63,12 @@ def validate_count(**context):
 def print_summary(**context):
     """Loga um resumo simples: quantidade e primeiro registro como exemplo."""
     slim = context["ti"].xcom_pull(key="slim_users", task_ids="select_fields")
-    logging.info("%d usuários processados. Exemplo de registro:\n%s", len(slim), json.dumps(slim[0], indent=2, ensure_ascii=False))
-
+    logging.info("%d usuários processados. Exemplo de registro:%s", len(slim), json.dumps(slim[0], indent=2, ensure_ascii=False))
 
 with DAG(
     dag_id="random_user_pipeline",
     description="Pipeline de 6 etapas para coletar e processar usuários aleatórios.",
-    start_date=days_ago(1),  # start backfill em D-1
+    start_date=days_ago(1),  # start backfill em D‑1
     schedule_interval=None,  # Executa on‑demand
     catchup=False,
     tags=["example", "randomuser"],
@@ -109,7 +79,6 @@ with DAG(
     },
     max_active_runs=1,
     concurrency=1,
-    timezone=pendulum.timezone("America/Sao_Paulo"),
 ) as dag:
 
     t1 = PythonOperator(
