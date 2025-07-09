@@ -12,10 +12,11 @@ from airflow.utils.dates import days_ago
 
 args = {
     'owner': 'me',
+    'time': 'data-engineer',
 }
 
 with DAG(
-    dag_id='abobora_dag',
+    dag_id='ETL-iris-csv',
     default_args=args,
     schedule_interval='@hourly',
     start_date=days_ago(2),
@@ -34,7 +35,7 @@ with DAG(
        df = pd.read_csv("base.csv")
        df[["sepal.length","sepal.width","petal.length","petal.width"]].to_csv("base_limpa.csv")
 
-    def load():
+    def bye():
        print("Hello Airflow Using a Python Operator!\nLOAD")
 
 
@@ -44,6 +45,9 @@ with DAG(
     trans = PythonOperator(task_id='task-trans',
                              python_callable=transformacao)
  
+    tchau = PythonOperator(task_id='task-msg',
+                             python_callable=bye)
+ 
     load = BashOperator(
         task_id='carga',
         bash_command='cat base_limpa.csv',
@@ -51,7 +55,7 @@ with DAG(
       
     # test   
 
-    extract >> trans >> load 
+    extract >> trans >> load >> tchau
 
 if __name__ == "__main__":
     dag.cli()
