@@ -7,7 +7,6 @@ from airflow.utils.dates import days_ago
 
 default_args = {
     'owner': 'me',
-    'time': 'eng_dados',
 }
 
 with DAG(
