@@ -1,3 +1,0 @@
-"""
-Módulo principal do projeto.
-""" 
